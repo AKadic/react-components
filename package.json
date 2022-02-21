@@ -1,0 +1,61 @@
+{
+  "name": "react-components",
+  "version": "0.1.0",
+  "repository": "https://github.com/AKadic/react-components.git",
+  "license": "MIT",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "npm run build:clean && npm run build:compile && npm run build:types",
+    "build:clean": "rimraf dist",
+    "build:compile": "babel --extensions .ts,.tsx src -d dist && copyfiles -u 1 \"src/**/*.module.scss\" -e \"**/*.stories.module.scss\" dist",
+    "build:types": "tsc",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "prepare": "husky install"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "dependencies": {
+    "@use-gesture/react": "^10.2.6",
+    "classnames": "^2.3.1",
+    "react-spring": "^9.4.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "^6.3.12",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "babel-loader": "^8.2.3",
+    "copyfiles": "^2.4.1",
+    "css-loader": "5.2.6",
+    "eslint": "^8.1.0",
+    "eslint-plugin-react": "^7.28.0",
+    "husky": "^7.0.2",
+    "lint-staged": "^12.3.4",
+    "prettier": "^2.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-spring": "^9.4.2",
+    "rimraf": "^3.0.2",
+    "sass": "^1.49.7",
+    "sass-loader": "10.1.1",
+    "style-loader": "2.0.0",
+    "typescript": "^4.4.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "npm run lint",
+    "*.{ts,tsx,scss,md}": "npm run format:write"
+  }
+}
