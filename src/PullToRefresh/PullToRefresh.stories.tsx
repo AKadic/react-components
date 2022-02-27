@@ -15,6 +15,7 @@ export const Simple = (): JSX.Element => {
 
     const onRefresh = () => {
         set([...items, items.length + 1])
+        console.log("Refresh")
     }
 
     return (
