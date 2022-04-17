@@ -1,7 +1,5 @@
-.drag {
-    touch-action: none;
-}
-
-.scroll {
-    touch-action: unset;
+.pullContainer {
+    overflow: hidden;
+    background-color: red;
+    color: white;
 }

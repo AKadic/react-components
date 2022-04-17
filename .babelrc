@@ -13,6 +13,6 @@
     "**/*.spec.tsx",
     "**/*.test.ts",
     "**/*.test.tsx",
-    "**/*.stories.tsx"
+    // "**/*.stories.tsx"
   ]
 }
