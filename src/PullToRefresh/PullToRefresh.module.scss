@@ -1,13 +1,5 @@
-.wrapper {
-    position: relative;
-}
-
 .pullContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
+    background-color: red;
+    color: white;
 }

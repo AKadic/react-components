@@ -5,12 +5,15 @@ import { animated, useSpring } from 'react-spring'
 import type { PullToRefreshProps } from './PullToRefreshProps'
 import styles from './PullToRefresh.module.scss'
 
-import RefreshIcon from "assets/frame1.svg"
-
 
 type DragState = {  // TODO Statemachine
     enabled: boolean
     started: boolean
+}
+
+enum Direction {
+    Down = -1,
+    Up = 1
 }
 
 function getScrollParent(node) {
@@ -29,7 +32,7 @@ function getScrollParent(node) {
 
 function PullToRefresh({
     children,
-    limit = 150,
+    limit = 50,
     onRefresh,
 }: PullToRefreshProps) {
     const items = Children.toArray(children)
@@ -45,8 +48,8 @@ function PullToRefresh({
         }
     }, []);
 
-    const [{ top }, api] = useSpring(
-        () => ({ top: -159 }))
+    const [{ height }, api] = useSpring(
+        () => ({ height: 0 }))
 
     const bind = useDrag(
         ({ down, movement: [, my], direction: [, dy] }) => {
@@ -54,44 +57,44 @@ function PullToRefresh({
                 setState(state => ({ ...state, dragging: false }))
             }
 
-            if (down && dy === 1) {
+            if (down && dy === Direction.Up) {
                 setState(state => ({ ...state, dragging: true }))
             }
 
             if (!state.dragging && down && dy === -1) return
 
-            // Drag State
             api.start(() => {
                 return {
-                    top:
-                        down && -159 + my < limit
-                            ? -159 + my
-                            : down && -159 + my >= limit
+                    height:
+                        down && my < limit
+                            ? my
+                            : down && my >= limit
                                 ? limit
-                                : -159,
+                                : 0,
                     immediate: down
                 }
             })
 
-            if (top.get() === limit && !down) {
+            if (height.get() === limit && !down) {
                 onRefresh()
             }
         }, { axis: "y", enabled: state.enabled, pointer: { touch: state.enabled } })
 
     useScroll(
-        ({ xy: [_, y], velocity: [, vy] }) => {
+        ({ xy: [, y], direction: [, dy] }) => {
+            if (state.enabled && dy === Direction.Down) return
+
             setState(state => ({ ...state, enabled: y === 0 }))
         }, { axis: "y", target: scroller })
 
     return (
         <div
-            className={styles.wrapper}
             ref={ref}
             {...bind()}>
             <animated.div 
                 className={styles.pullContainer} 
-                style={{ top }}>
-                <RefreshIcon />
+                style={{ height }}>
+                Loading ...
             </animated.div>
             {items}
         </div>
